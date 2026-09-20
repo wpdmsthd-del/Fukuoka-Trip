@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>후쿠오카 텐진 맛집 스코어 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#16263f;
+    --indigo-2:#1f3556;
+    --kaki:#d9521f;
+    --kaki-soft:#e87a4a;
+    --paper:#f4ede0;
+    --paper-2:#ebe1cf;
+    --ink:#1a160f;
+    --muted:#7d7361;
+    --line:#d8cbb2;
+    --gold:#b8862f;
+    --good:#4f7a4a;
+    --warn:#b6772a;
+    --bad:#a8492f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Noto Sans KR',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px 80px}
+
+  /* ---- header ---- */
+  header{
+    background:var(--indigo);
+    color:var(--paper);
+    padding:30px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  header .inner{max-width:760px;margin:0 auto;padding:0 20px;position:relative;z-index:2}
+  .eyebrow{
+    font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--kaki-soft);font-weight:700;margin-bottom:12px;
+  }
+  header h1{
+    font-family:'Shippori Mincho',serif;font-weight:800;
+    font-size:clamp(28px,7vw,44px);line-height:1.15;letter-spacing:-.01em;
+  }
+  header h1 .jp{display:block;font-size:.5em;letter-spacing:.18em;color:#b9c4d4;font-weight:600;margin-top:8px}
+  header p.sub{margin-top:16px;color:#c3ccd9;font-size:14px;max-width:46ch}
+  .noren{
+    position:absolute;top:0;left:0;right:0;height:8px;
+    background:repeating-linear-gradient(90deg,var(--kaki) 0 40px,var(--indigo-2) 40px 44px);
+    opacity:.9;
+  }
+
+  /* ---- method card ---- */
+  .method{
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin-top:-44px;position:relative;z-index:3;
+    padding:18px 18px 8px;
+  }
+  .method h2{font-size:13px;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:12px;text-transform:uppercase}
+  .axes{display:flex;flex-wrap:wrap;gap:8px 14px;margin-bottom:12px}
+  .axis{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500}
+  .axis .dot{width:9px;height:9px;border-radius:50%}
+  .axis.taste .dot{background:var(--kaki)}
+  .axis.value .dot{background:var(--gold)}
+  .axis.rep .dot{background:var(--indigo)}
+  .axis.access .dot{background:var(--good)}
+  .axis.conv .dot{background:#9a8fb0}
+  .method .note{font-size:12px;color:var(--muted);border-top:1px dashed var(--line);padding:10px 0;line-height:1.5}
+
+  /* ---- tabs ---- */
+  .tabs{
+    display:flex;gap:6px;overflow-x:auto;padding:18px 0 6px;
+    position:sticky;top:0;background:var(--paper);z-index:20;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    flex:0 0 auto;border:1px solid var(--line);background:#fff;
+    color:var(--ink);border-radius:999px;padding:8px 15px;font-size:13.5px;
+    font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s;
+    font-family:'Noto Sans KR',sans-serif;
+  }
+  .tab .n{font-family:'Shippori Mincho',serif;color:var(--muted);margin-right:5px;font-size:12px}
+  .tab:hover{border-color:var(--kaki-soft)}
+  .tab.on{background:var(--indigo);color:var(--paper);border-color:var(--indigo)}
+  .tab.on .n{color:var(--kaki-soft)}
+
+  /* ---- section ---- */
+  .section{display:none;padding-top:6px}
+  .section.on{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* 일정표 */
+  .itin-intro{font-size:13px;color:#4a4232;background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin:12px 2px 6px;line-height:1.6}
+  .itin-intro b{color:var(--kaki)}
+  .day{background:#fff;border:1px solid var(--line);border-radius:14px;margin-top:14px;overflow:hidden}
+  .day-top{display:flex;align-items:center;gap:10px;padding:12px 15px;background:var(--indigo);color:var(--paper);flex-wrap:wrap}
+  .day-no{font-family:'Shippori Mincho',serif;font-weight:800;font-size:16px;color:var(--gold);flex:0 0 auto}
+  .day-date{font-size:12px;color:#d7c9b1;font-weight:600}
+  .day-theme{font-size:12.5px;font-weight:700;margin-left:auto;color:#fff}
+  .rows2{padding:8px 15px 6px}
+  .irow2{display:flex;gap:11px;padding:7px 0;border-bottom:1px dashed var(--paper-2);font-size:13.5px;line-height:1.5}
+  .irow2:last-child{border-bottom:none}
+  .irow2 .t{font-family:'Shippori Mincho',serif;font-weight:700;color:var(--kaki);flex:0 0 86px;font-size:12px;padding-top:2px}
+  .irow2 .itxt{flex:1;min-width:0}
+  .irow2 .memo{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+  .plink{color:var(--indigo-2);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--kaki-soft);white-space:nowrap}
+  .plink:hover{color:var(--kaki)}
+  .plink:active{opacity:.6}
+  .meal{display:inline-block;font-size:10.5px;font-weight:700;background:var(--kaki);color:#fff;padding:1px 7px;border-radius:5px;margin-right:6px;vertical-align:middle}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  @media(max-width:620px){.checks{grid-template-columns:1fr}}
+  .checkbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .checkbox h4{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:800;margin-bottom:9px;color:var(--indigo)}
+  .checkbox ul{list-style:none;font-size:12.5px;color:#4a4232;line-height:1.55}
+  .checkbox li{padding:3px 0 3px 18px;position:relative}
+  .checkbox li::before{content:"✓";position:absolute;left:0;color:var(--good);font-weight:800}
+  .checkbox.meals li::before{content:"●";color:var(--kaki);font-size:9px;top:6px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:18px 2px 4px}
+  .sec-head h3{font-family:'Shippori Mincho',serif;font-size:24px;font-weight:800}
+  .sec-head .cnt{font-size:12px;color:var(--muted);font-weight:600}
+  .sec-note{
+    font-size:12.5px;color:var(--warn);background:#fbf2e3;border:1px solid #ecd9b6;
+    border-radius:10px;padding:9px 12px;margin:10px 2px 4px;display:flex;gap:8px;
+  }
+  .sec-note b{color:var(--bad)}
+
+  /* ---- card ---- */
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:16px 16px 14px;margin-top:14px;position:relative;
+    box-shadow:0 1px 0 rgba(0,0,0,.02);
+  }
+  .card .rank{
+    position:absolute;top:-9px;left:14px;font-family:'Shippori Mincho',serif;
+    font-weight:800;font-size:12px;letter-spacing:.05em;
+    background:var(--indigo);color:var(--paper);padding:2px 9px;border-radius:6px;
+  }
+  .card.top .rank{background:var(--kaki)}
+  .card-top{display:flex;gap:14px;align-items:flex-start}
+  .stamp{
+    flex:0 0 auto;width:58px;height:58px;border-radius:50%;
+    border:2.5px solid var(--kaki);color:var(--kaki);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:'Shippori Mincho',serif;line-height:1;margin-top:2px;
+  }
+  .stamp .v{font-size:21px;font-weight:800}
+  .stamp .l{font-size:8px;letter-spacing:.08em;margin-top:2px;color:var(--kaki-soft)}
+  .meta{flex:1;min-width:0}
+  .name-ko{font-weight:900;font-size:17px;line-height:1.25}
+  .name-jp{font-size:12px;color:var(--muted);margin-top:2px}
+  .badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+  .badge{
+    font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;
+    background:var(--paper-2);color:#5a513e;border:1px solid var(--line);
+  }
+  .badge.g{background:#eaf2e8;color:var(--good);border-color:#cfe0cb}
+  .badge.r{background:#f6e7e1;color:var(--bad);border-color:#e8cabd}
+  .badge.star{background:var(--indigo);color:var(--paper);border-color:var(--indigo)}
+
+  /* bars */
+  .bars{margin-top:13px;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+  @media(max-width:520px){.bars{grid-template-columns:1fr}}
+  .bar{display:flex;align-items:center;gap:9px}
+  .bar .lab{font-size:11.5px;color:var(--muted);font-weight:600;width:54px;flex:0 0 auto}
+  .bar .track{flex:1;height:6px;background:var(--paper-2);border-radius:4px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:4px;width:0;transition:width .6s cubic-bezier(.2,.7,.2,1)}
+  .bar .sc{font-size:11.5px;font-weight:700;width:24px;text-align:right;flex:0 0 auto;font-family:'Shippori Mincho',serif}
+  .f-taste{background:var(--kaki)}
+  .f-value{background:var(--gold)}
+  .f-rep{background:var(--indigo)}
+  .f-access{background:var(--good)}
+  .f-conv{background:#9a8fb0}
+
+  .why{
+    margin-top:13px;font-size:13.5px;line-height:1.6;color:#352e22;
+    border-top:1px solid var(--paper-2);padding-top:11px;
+  }
+  .why b{color:var(--kaki);font-weight:700}
+  .maplink{display:inline-flex;align-items:center;gap:6px;margin-top:12px;text-decoration:none;font-size:13px;font-weight:700;color:var(--paper);background:var(--kaki);padding:8px 14px;border-radius:9px;transition:.15s}
+  .maplink:hover{background:var(--kaki-soft)}
+  .maplink:active{transform:scale(.97)}
+  .loc-pill{position:absolute;top:-9px;right:14px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--indigo);color:var(--paper)}
+
+  footer{margin-top:34px;text-align:center;font-size:12px;color:var(--muted);line-height:1.7}
+  footer .hr{height:1px;background:var(--line);margin:0 auto 18px;max-width:120px}
+</style>
+</head>
+<body>
+<header>
+  <div class="noren"></div>
+  <div class="inner">
+    <div class="eyebrow">Fukuoka · Tenjin Food Score</div>
+    <h1>후쿠오카 텐진 맛집 스코어
+      <span class="jp">天神グルメ・スコアガイド</span>
+    </h1>
+    <p class="sub">구글 리뷰·일본 현지 평가·한국 블로그·유튜브를 취합해 광고성 평가를 거르고, 10개 부문 30곳을 5개 축으로 점수화했습니다.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="method">
+    <h2>스코어링 5축 · 종합 10점 만점</h2>
+    <div class="axes">
+      <span class="axis taste"><span class="dot"></span>맛 (35%)</span>
+      <span class="axis rep"><span class="dot"></span>현지평판 (25%)</span>
+      <span class="axis value"><span class="dot"></span>가성비 (15%)</span>
+      <span class="axis access"><span class="dot"></span>텐진접근성 (12.5%)</span>
+      <span class="axis conv"><span class="dot"></span>편의성 (12.5%)</span>
+    </div>
+    <div class="note">현지평판 = 구글 평점·리뷰 수·일본/한국 커뮤니티 언급. 편의성 = 웨이팅·예약·언어메뉴·영업시간. 리뷰 표본이 적은 곳(★표본 적음)은 점수 신뢰구간이 넓으니 참고만 하세요.</div>
+  </div>
+
+  <nav class="tabs" id="tabs"></nav>
+  <main id="main"></main>
+
+  <footer>
+    <div class="hr"></div>
+    데이터 기준 2026년 6월 · 구글 평점/리뷰 수는 변동됩니다.<br>
+    영업시간·휴무·예약은 방문 전 재확인하세요. 점수는 취합 데이터 기반의 상대 평가입니다.
+  </footer>
+</div>
+
+<script>
+const W={taste:.35,rep:.25,value:.15,access:.125,conv:.125};
+function overall(s){return (s.taste*W.taste+s.rep*W.rep+s.value*W.value+s.access*W.access+s.conv*W.conv);}
+
+// 구글 지도 place_id (한국어 이름 기준). 동명 다른 지점이 아니라 정확히 이 가게로 연결. 없는 곳은 이름 검색으로 폴백.
+const PID={
+"스시 타츠쇼":"ChIJdepxrZ6RQTURyUVcviG75DI",
+"야마나카 본점":"ChIJa76vDJuRQTUREHEiKs15P34",
+"니쿠이치 야쿠인":"ChIJy8vw4oKRQTURPkcIjdVIaMM",
+"바쿠로 (야쿠인)":"ChIJKadB3YKRQTURUQ_dWD7zHuE",
+"하치하치 (88) 다이묘":"ChIJ46uv9JaRQTURaFL5vH-xEac",
+"야키토리 하치베에 (이마이즈미)":"ChIJ5dg9R4SRQTURQfMgsgnY1aw",
+"가람":"ChIJPwazSJmRQTUR1chXOnT5MGc",
+"아베키":"ChIJN8W0HXiRQTURssGgm-vr0aM",
+"치카에":"ChIJx7zaE4eRQTURntscDlwa6cE",
+"하카타 고마사바야":"ChIJzTGkh4iRQTURJRTd5fzifgk",
+"우메야마 텟페이 쇼쿠도":"ChIJvaxEAZqRQTURqfbaaTQEW8g",
+"잇카쿠 쇼쿠도":"ChIJVVWBWpeRQTUR5OWmqsDYDxs",
+"스시 스이교":"ChIJx35P0paRQTURA_bMFgtrqHg",
+"에비스야 우동":"ChIJAxxqc76RQTURvuKUNCh8nlg",
+"규카츠 모토무라 (파르코점)":"ChIJax0RbrCRQTUR54R-05nTmuE",
+"산큐 우동":"ChIJJwGoZ8CRQTURAPxEIHqxUHw",
+"니쿠덴 (아카사카)":"ChIJm55AMdqTQTURk4USNIusvmQ",
+"타케토라":"ChIJbeA71UaRQTUR0HKTLImA3nU",
+"우나기노에이토":"ChIJJRsQAm-RQTURnIgxRcGbjXM",
+"쿠로다한 (참치덮밥)":"ChIJ9Z6V8R-RQTURPpWlHgwtCX8",
+"신신라멘 텐진본점":"ChIJaVDnv46RQTURWuJE01tjUGk",
+"로바타 신카와바시":"ChIJFUnUdACRQTURVmU27NPYyL0",
+"로바타 산코바시":"ChIJy9pSIpGRQTURYJ-hXl7dh2s",
+"카미나리바시":"ChIJEXUDW5CRQTURbcplqUYvkP8",
+"신가리":"ChIJTbA12IiRQTURS-mg-3xuG18",
+"타치노야 하카타":"ChIJXRhqKuyRQTURwAYYlcA0Id4",
+"메구스타 파이브":"ChIJi2Fk7O2RQTURTcufnETF5sE",
+"타치노미 마타아시타":"ChIJB346g5CRQTURvfi9bV68aJ8",
+"타치노미 카도야":"ChIJXXVhoI-RQTURsZJJQSe1EbY",
+"스탠딩바 시프트":"ChIJ_bWZwyqRQTURKozq7pTFc4Y",
+"규카츠 모토무라 (텐진 파르코)":"ChIJax0RbrCRQTUR54R-05nTmuE",
+"쿠로다한 (다이묘)":"ChIJ9Z6V8R-RQTURPpWlHgwtCX8",
+"모츠나베 라쿠텐치 (다이묘)":"ChIJYy3t692RQTURo8ZRYB7ccPs",
+"우나기노에이토 (나카스)":"ChIJJRsQAm-RQTURnIgxRcGbjXM",
+"니쿠덴 (텐진/아카사카)":"ChIJm55AMdqTQTURk4USNIusvmQ",
+"타케토라 (한입교자)":"ChIJbeA71UaRQTUR0HKTLImA3nU",
+"로바타 신카와바시 (히든젬)":"ChIJFUnUdACRQTURVmU27NPYyL0",
+"모츠나베 이치후지 (니시도리)":"ChIJMY-U-oWRQTURfg362xd6ocY",
+"산큐 우동 (멘타이크림)":"ChIJJwGoZ8CRQTURAPxEIHqxUHw",
+"신신라멘 텐진본점 (돈코츠)":"ChIJaVDnv46RQTURWuJE01tjUGk",
+"스시 사카이":"ChIJ17cQ-ZORQTURYW5ez_XrhaE",
+"미야치쿠 (미야자키와규)":"ChIJ0af0bpORQTURdeccCkt6u-A",
+"후우도 (가스소바·텐푸라)":"ChIJV9fJA-2RQTURfGEZ09WpdBU",
+"데니 앤 더 스푼":"ChIJJ_-G4reRQTURcp7JezTxw6E",
+"누아이스 텐진":"ChIJCWYLG3CRQTURuMjJK-ARkrE",
+"키유페봉 텐진 (과일타르트)":"ChIJYy0YoYWRQTURftwDR8FTSUY",
+"행복한 팬케이크 텐진":"ChIJReaHUI-RQTURJLhN_IJQaC0",
+"프루츠가든 신슨 (과일산도)":"ChIJSWyUTj6RQTUR1uF8MhBavH8",
+"베이크 치즈타르트 (텐진지하)":"ChIJUXXySY6RQTUR2WY0qz30FJw",
+"이몬느 하카타 (모찌 아이스크림)":"ChIJK2W2a8mRQTUR5pL5oxp41Eg",
+"커피 카운티":"ChIJB75aDpyRQTURP4AEu1gPRKs",
+"다이묘 소프트크림":"ChIJq6omkIaRQTURB1RK9p--q4I",
+"돈카츠 와카바":"ChIJO0SHmbCRQTUR9eU6o66LbMs",
+"쿠로마츠 다이묘":"ChIJW_lTOG2RQTUR3P6F9-Q_LD0",
+"카츠동 와카바 이마이즈미":"ChIJ3wbz19SRQTURQMIRuwIDdZI",
+"이치이 스시":"ChIJYTIPm5uRQTURHyB0IT08TtE",
+"효탄즈시":"ChIJp8rFoo-RQTURXgrlDgjG8ho",
+"사시스 텐진":"ChIJp55_RgCRQTURIOB9OXP7uVQ",
+"토메테바 이마이즈미":"ChIJ9wdaS4WRQTUR6EBNud0l1TQ",
+"야타로 우동":"ChIJrfdTGpGRQTURhaRWpj6V8IY",
+"노코우동 텐진빌딩점":"ChIJqc3HXo6RQTURaLcfX2Emi4o",
+"규센닌":"ChIJk4X47JaRQTURhVLKtw-nB-0",
+"이타다키 (우라텐진)":"ChIJ233sM3ORQTURkGgQf76OhBg",
+"긴샤리 호르몬 이마이즈미":"ChIJZ5SVrMqRQTURmEygkXctqGE",
+"야키니쿠 하나비 2호점":"ChIJI9va-YaRQTUR6tY6vRHVVAo",
+"토리카와야키 구":"ChIJ2YT2woORQTURTPmazNEp_zs",
+"미츠마스 텐진":"ChIJf72_-4ORQTURg1qlK41NlZA",
+"야키토리 634 (무사시)":"ChIJRXR9-5CRQTURqtfJ3nz-6_k",
+"야키토리 사카바 스우":"ChIJxZkM9WWRQTUReDc1orP6qFQ",
+"무사시자":"ChIJU-HAnpaRQTURwxqU4EbTMYg",
+"신지대 텐진점":"ChIJTwJ21ruRQTUR_Vg2XgGekQc",
+"우나토토 다이묘":"ChIJoaFsK1yRQTURxW4cWwpz3K4",
+"키스이마루":"ChIJPyivy66RQTURzAMqGSqRgPA",
+"이토오카시":"ChIJvSjSGdGRQTURu0y4pYjVtAQ",
+"우오추":"ChIJ6fc0XISRQTURaOh4csxp_VQ",
+"산미 다이묘 중앙점":"ChIJJSbuYdORQTURFcqm-Q88qgo",
+"라멘 카네토라":"ChIJD7BFpICRQTUR5BeGhZW5axY",
+"멘야 가가 텐진":"ChIJD6aiOTyRQTURbaRcFVkc5Xg",
+"이치란 텐진":"ChIJf0k3J46RQTURLqyoFviXK0M",
+"야키니쿠 앗짱 (나카스)":"ChIJnXOp7xmRQTUR74JAqMU0eHs",
+"카마키리 우동":"ChIJQyy1uYCRQTURsWTfk4qgbBQ",
+"완교자":"ChIJMargXpSRQTURNkogWlX1Uzw",
+"후쿠오카 덤플링 프레시":"ChIJ79GcMKqRQTURGNhcbAsM4lg",
+"바쿠주도 교자":"ChIJC6R7ZQKRQTURUcZ0GnkVd58",
+"차부야 카레 텐진":"ChIJY0EtCnmRQTURm6KR51aX-KU",
+"앨리 카레 티키":"ChIJUzaMW5CRQTURdDP5iS4jnWc",
+"하이더 방글라데시 카레":"ChIJT4pkS9WTQTURAk6ECrIFpgU",
+"멘야 잇시 (라멘 잇시)":"ChIJEQ4Y-5SRQTURSM6eDmngT5k",
+"스즈카케 (하카타 본점)":"ChIJ6zU6eMiRQTUR7EQ8viREEcc",
+"쇼쿠도 미츠":"ChIJNfgK3CmRQTURhow7addHNgY",
+"이나바쵸 잇케이":"ChIJLbYoGeCRQTURqlDg9bICGmE",
+"오무스비 요코초 (니시나카스)":"ChIJm4z0qjuRQTURHACBgc60FBM"
+};
+function mapUrl(it){
+  const q=encodeURIComponent((it.jp.split(' / ')[0])+' 福岡');
+  const pid=PID[it.ko];
+  return pid
+    ? `https://www.google.com/maps/search/?api=1&query=${q}&query_place_id=${pid}`
+    : `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+
+const DATA=[
+{cat:"스시",jp:"寿司",note:"가성비 오마카세(이치이)→정통(스이교)→미슐랭 3성급(사카이)→관광 대표(효탄). 목적·예산별로.",items:[
+  {ko:"이치이 스시",jp:"いちい寿し / Ichii Sushi",s:{taste:9.4,value:9.5,rep:8.0,access:7.0,conv:6.0},badges:["노부부 오마카세","10관 2,500엔","★4.6·391"],why:"야쿠인 도보권. 노부부가 운영하며 <b>신선도·가성비가 압도적</b> — 셰프 코스 10관이 2,500엔, 오토로 호평이 끊이지 않음. 카운터석뿐이라 좁고 금방 참, <b>예약 권장·일요휴무</b>. 텐진 중심에선 살짝 벗어남."},
+  {ko:"스시 스이교",jp:"鮨 翠魚 / Sushi Suigyo",s:{taste:9.3,value:7.5,rep:8.0,access:7.5,conv:7.5},badges:["오마카세 12,000엔~","영어 가능 셰프","★4.6·217"],why:"제대로 된 <b>오마카세 경험</b>을 원할 때. 코스 12,000엔대, 셰프가 영어로 각 접시를 설명해 외국인 응대가 편함. 분위기 차분, 디저트까지 만족도 높음. 일요휴무, 단가는 높은 편."},
+  {ko:"스시 사카이",jp:"鮨 さかい / Sushi Sakai",loc:"니시나카스",s:{taste:9.6,value:7.5,rep:9.3,access:8.0,conv:5.5},badges:["미슐랭 3성급","와인 페어링","★4.7·398"],why:"<b>후쿠오카 최고의 스시야</b>(과거 미슐랭 3성). 샤리의 산미 밸런스, 시라코 텐푸라·카라스미가 일품이고 와인 페어링이 명물. 에도마에 정통이면서 도쿄 동급보다 30%+ 저렴. <b>예약 필수·고가</b>, 카운터 경험."},
+  {ko:"효탄즈시",jp:"ひょうたん寿司 / Hyotan Sushi",s:{taste:8.7,value:8.0,rep:9.2,access:9.0,conv:5.0},badges:["텐진 대표","사바·소라 신선","★4.2·5,087"],why:"텐진 한복판의 <b>관광 대표 스시</b>(리뷰 5천건). 사바(고등어) 사시미, 구운 소라 등 규슈 특산이 신선하고 가격도 합리적. 명성만큼 <b>웨이팅 1~1.5시간</b>이 단점 — 오픈 전 줄서기 권장."},
+  {ko:"사시스 텐진",jp:"鮨処 さしす / Sashisu",s:{taste:8.8,value:9.0,rep:8.3,access:8.5,conv:6.5},badges:["토로마키 명물","3,000엔 이하","★4.4·634"],why:"<b>1인 3,000엔 이하</b>로 즐기는 가성비 스시. 참다랑어 토로마키가 시그니처, 전통과 모던이 섞인 분위기. 가게가 좁아 대기 발생, <b>수·목 휴무</b>에 19시 전 방문 추천."},
+  {ko:"스시 타츠쇼",jp:"鮨 辰昇 / Sushi Tatsushou",s:{taste:9.4,value:7.8,rep:8.5,access:8.0,conv:6.0},badges:["오마카세 명점","참치 니기리 시그니처","★4.5·312"],why:"타카사고(와타나베도리 남쪽)의 <b>오마카세 명점</b>(4.5). \"심플이 최고\"라는 셰프 철학대로 재료 본연의 신선함이 빛나고 특히 참치 니기리가 압권. 프리미엄 오마카세인데 물·차가 무료인 따뜻한 응대. 1회 10명 한정, 저녁 12,000엔대·예약 필수·일요휴무."},
+  {ko:"야마나카 본점",jp:"山中 本店 / Yamanaka",s:{taste:9.3,value:7.8,rep:8.5,access:8.3,conv:6.0},badges:["고급 스시","토로 별미","★4.2·874"],why:"와타나베도리의 <b>고급 스시야</b>(4.2). 신선하고 아름답게 담아내는 니기리, 입에서 녹는 토로가 호평이고 미니멀한 공간의 분위기가 인상적. 외국인은 예약이 어려운 편이라 미리 잡고 카운터석 추천. 번역앱 지참 권장·일요휴무."},
+]},
+{cat:"야키니쿠",jp:"焼肉",note:"흑모와규 프라이빗(니쿠덴)→골목 히든젬(규센닌)→나카스 심야(앗짱)→A5 미야자키규 철판(미야치쿠). 예약 권장.",items:[
+  {ko:"니쿠덴 (아카사카)",jp:"個室焼肉にく田 赤坂 NIKUDEN",s:{taste:9.4,value:8.7,rep:9.0,access:7.5,conv:7.5},badges:["특선 흑모와규","개별룸","★4.8·851"],why:"텐진 다운타운 <b>흑모와규 프라이빗 야키니쿠</b>(4.8). 테이블마다 개별룸이라 분위기 최고, 6,000엔 세트로 둘이 다 못 먹을 양. <b>두꺼운 컷</b>이 얇은 것보다 낫다는 평. 예약 권장, 적자카 쪽이라 텐진 중심선 살짝 거리."},
+  {ko:"규센닌",jp:"焼肉 牛仙人 / Gyusennin",s:{taste:9.4,value:8.5,rep:8.8,access:7.5,conv:6.0},badges:["골목 히든젬","와규 세트 6,980엔","★4.7·1,203"],why:"좁은 골목의 <b>숨은 명소</b> — 모르고 지나칠 만큼. 혀·등심·갈비·안창 등 와규 세트(6,980엔)의 마블링과 부드러움이 발군. 손님 대부분 일본인·한국인. <b>한 달 전 예약 권장·월휴</b>."},
+  {ko:"이타다키 (우라텐진)",jp:"ITADAKI Offal BBQ 裏天神",s:{taste:9.2,value:8.7,rep:8.8,access:8.0,conv:7.5},badges:["곱창+와규","새벽 3시까지","★4.8·422"],why:"<b>곱창과 와규를 캐주얼하게</b>. 양념 소고기 호평, 그릴 위 후드 환기로 쾌적. <b>새벽 3시까지</b> 영업해 야식·2차로 강력. 구글맵 예약이 쉽고 영어 메뉴 있어 외국인 친화."},
+  {ko:"긴샤리 호르몬 이마이즈미",jp:"銀しゃり焼肉 直球ホルモン 今泉店",s:{taste:9.0,value:8.5,rep:9.0,access:8.5,conv:7.5},badges:["흑모와규","영어메뉴","★4.8·786"],why:"친절·에너지 넘치는 서비스로 평이 좋은 곳(4.8). 부위 설명을 곁들여 추천해 주고 <b>세트 메뉴 가성비</b>가 좋음. 밥이 차지고 맛있다는 디테일 호평. 웹 예약 권장."},
+  {ko:"야키니쿠 하나비 2호점",jp:"焼肉花火 2号店",s:{taste:8.8,value:8.7,rep:9.2,access:8.5,conv:8.0},badges:["신축 깔끔","카카오 예약","★4.9·209"],why:"신축이라 <b>깨끗하고 분위기 좋음</b>(4.9). 태블릿 다국어 번역으로 주문 편하고 <b>카카오톡 예약</b> 가능해 한국인 친화. 우설+3~4인 세트 추천. 로컬 감성보단 편안·무난한 한 끼."},
+  {ko:"야키니쿠 앗짱 (나카스)",jp:"焼肉やっちゃん 中洲店",s:{taste:9.3,value:8.7,rep:9.2,access:8.7,conv:7.0},badges:["나카스 심야 4시","눈앞 컷·마리네이드","★4.9·1,106"],why:"나카스의 <b>심야 야키니쿠 명점</b>(4.9, 새벽 4시까지). 셰프가 눈앞에서 고기를 잘라 양념해주고 소·혀·하라미가 부드럽고 풍미 깊음. 가격도 합리적, 사장 친화력 좋고 구글 번역으로 응대. 2차·야식으로 최고 — 금방 차니 일찍 가세요."},
+  {ko:"미야치쿠 (미야자키와규)",jp:"宮崎牛 みやちく 中洲",loc:"나카스",s:{taste:9.4,value:8.0,rep:9.0,access:8.5,conv:6.5},badges:["A5 미야자키와규","철판 스테이크","★4.5·742"],why:"나카스의 <b>A5 미야자키 와규 철판 스테이크</b>(4.5). 와규 개체번호를 제공할 만큼 진짜배기, 100g 로스 런치코스 4,900엔이 가성비. 소금+생와사비만으로 충분한 풍미. 좌석 한정 <b>예약 권장</b>, 셰프 영어 가능."},
+  {ko:"니쿠이치 야쿠인",jp:"肉一 薬院 / Nikuichi",s:{taste:9.3,value:8.7,rep:9.0,access:8.3,conv:6.5},badges:["야쿠인 와규","한 달 전 예약","★4.5·1,863"],why:"야쿠인의 <b>와규 야키니쿠 인기점</b>(4.5). \"후쿠오카 여행 중 최고의 고기\"라는 평처럼 모든 부위가 부드럽게 녹고 우설·하라미(안창)가 특히 호평. 태블릿 주문이라 편함. 인기가 많아 <b>한 달 전 예약 권장</b>, 셀프 그릴이라 직접 구움."},
+  {ko:"바쿠로 (야쿠인)",jp:"Japanese beef BAKURO 薬院",s:{taste:9.2,value:8.7,rep:8.8,access:8.3,conv:7.0},badges:["와규 오마카세","가고시마 흑우","★4.4·422"],why:"야쿠인의 <b>와규 오마카세 야키니쿠</b>(4.4). 부위별 가이드와 함께 나오는 와규가 신선하고 마블링이 훌륭, 야키스키·샤토브리앙이 호평. 영어 메뉴·친절 응대(두고 간 안경을 쫓아와 돌려줌). 프라이빗 부스도 있어 편안 — 고쿠조 코스 추천."},
+  {ko:"하치하치 (88) 다이묘",jp:"博多焼肉 はちはち 大名店",s:{taste:9.0,value:8.8,rep:8.5,access:8.7,conv:7.0},badges:["가성비 와규","기가 기린 생맥","★4.3·157"],why:"다이묘의 <b>가성비 와규 야키니쿠</b>(4.3). \"이번 여행 최고의 한 끼\"라는 평처럼 와규가 입에서 녹는데 가격은 합리적, 첫 접시 먹을 때쯤 다음 접시가 나오는 페이스가 좋음. 기가 사이즈 기린 생맥과 궁합. 사이드는 살짝 비싼 편·심야까지."},
+]},
+{cat:"우동",jp:"うどん",note:"하카타 우동은 면이 부드러운 게 특징. 멘타이크림(산큐)→카루비부카케(에비스야)→수타 명점(카마키리)→24시 야식(야타로).",items:[
+  {ko:"산큐 우동",jp:"三休うどん / Sankyu Udon",s:{taste:9.2,value:9.0,rep:8.5,access:8.5,conv:7.0},badges:["멘타이크림우동","현지 히든젬","★4.7·377"],why:"이마이즈미의 <b>현지 히든젬</b>(4.7). 명란+크림 우동, 바삭한 고보텐·고등어 튀김이 호평이고 우동+카츠동이 1,000엔 초반대로 가성비 최고. 주인 친절·한글 응대 시도. <b>18시 마감·월휴</b>라 시간 체크 필수."},
+  {ko:"에비스야 우동",jp:"えびすやうどん / Ebisuya",s:{taste:8.7,value:8.5,rep:8.8,access:7.0,conv:7.0},badges:["카루비부카케 명물","현금만","★4.4·1,762"],why:"<b>카루비부카케 우동</b>(소고기+크럼블+노른자)이 시그니처. 토리텐도 바삭. 매끈한 면과 합이 좋음. 단점은 <b>현금만·수요일 휴무</b>, 생계란 위생 관련 후기가 일부 있어 위장 약하면 주의."},
+  {ko:"카마키리 우동",jp:"釜切りうどん / Kamakiri Udon",s:{taste:9.2,value:8.7,rep:8.5,access:8.7,conv:6.0},badges:["수타 우동","제철 사시미 사이드","★4.1·1,083"],why:"다이묘의 <b>손으로 뽑는 수타 우동</b> 명점(타베로그 100선). 겉은 부드럽고 속은 쫄깃한 면에 아사리(바지락) 우동·온타마 붓카케가 호평, 곁들이는 텐푸라·그날의 사시미도 수준급. 스다치 우동은 더운 날 별미. 좁아서 붐비지만 그만한 값."},
+  {ko:"야타로 우동",jp:"やたろう / Yataro Udon",s:{taste:8.3,value:9.2,rep:8.0,access:8.5,conv:8.5},badges:["24시간(일휴)","하카타 우동 정석","★4.0·1,431"],why:"<b>24시간 영업</b>(일요 휴무)의 로컬 야식 성지. 후쿠오카에선 술 후 라멘보다 부드러운 하카타 우동이 정석. 고보텐 우동·카시와 주먹밥 추천. 저렴하지만 <b>현금만</b>."},
+  {ko:"노코우동 텐진빌딩점",jp:"濃麦うどん 天神ビル店",s:{taste:8.5,value:8.7,rep:7.5,access:9.5,conv:8.0},badges:["텐진빌딩 지하","세트 가성비","★4.2·362"],why:"텐진빌딩 지하라 <b>접근성 최상</b>. 텐푸라 우동+밥 세트가 1,390엔으로 가성비, 면이 쫄깃하다는 호평. 근처에 있다면 부담 없이 들르기 좋은 선택지."},
+]},
+{cat:"야키토리",jp:"焼き鳥",note:"후쿠오카 명물 토리카와(닭껍질)에 강한 집 위주. 토리카와구·미츠마스가 닭껍질 끝판왕, 스우는 오마카세 히든젬.",items:[
+  {ko:"토리카와야키 구",jp:"とりかわ焼き 串皮 / Gu",s:{taste:9.0,value:8.7,rep:8.5,access:8.0,conv:7.0},badges:["토리카와 전문","소금 퍼포먼스","★4.5·626"],why:"후쿠오카 명물 <b>토리카와(닭껍질) 전문</b>. 1인당 최소 2개씩 권할 만큼 중독성, 테이블 마늘파우더 조합 추천. 셰프의 소금 뿌리기 퍼포먼스가 볼거리. <b>오토시(기본안주) 200엔 자동 청구</b> 주의."},
+  {ko:"미츠마스 텐진",jp:"みつます 天神 / Mitsumasu",s:{taste:9.0,value:8.8,rep:8.3,access:7.5,conv:7.5},badges:["닭껍질·삼겹 최상","QR 영어","★4.4·559"],why:"<b>닭껍질·삼겹 굽기가 완벽</b>하다는 평이 반복(\"규슈 최고 닭껍질\"). 가격도 합리적이고 QR 영어 메뉴로 주문 편함. 단점은 <b>환기가 약해</b> 옷에 냄새가 밴다는 것 — 세탁 가능한 옷 추천."},
+  {ko:"야키토리 634 (무사시)",jp:"やきとり六三四 武蔵 / 634",s:{taste:9.0,value:8.0,rep:8.5,access:8.5,conv:5.5},badges:["예약 거의 필수","숯향 꼬치","★4.2·997"],why:"인기가 높아 <b>사실상 예약 필수</b>(외국 번호는 어려움). 숯불 향이 살아있는 꼬치, 특히 삼겹이 호평. 따뜻한 분위기와 친절한 응대. 자리 경쟁이 치열한 게 유일한 허들 — 막차 시간대 워크인 노려볼 만."},
+  {ko:"야키토리 사카바 스우",jp:"焼き鳥酒場 すぅ / Suu",s:{taste:9.3,value:8.5,rep:7.5,access:8.0,conv:6.0},badges:["노부부 오마카세","예약 필수","★4.7·79"],why:"노부부가 운영하는 <b>오마카세 야키토리 히든젬</b>. 소금간 꼬치가 부위별로 육즙 가득, 닭 스프도 호평. 와인·음료도 저렴. <b>예약 필수·월휴</b>, 리뷰 표본이 적은 점(79건)은 감안."},
+  {ko:"야키토리 하치베에 (이마이즈미)",jp:"焼鳥 八兵衛 今泉店",s:{taste:8.7,value:8.0,rep:8.5,access:8.7,conv:7.5},badges:["후쿠오카 명물","금연 매장","★4.1·606"],why:"후쿠오카 <b>야키토리 대표 브랜드</b> 40년 노포(4.1). 활기찬 분위기에 하사미야키(가위로 자르는 꼬치)가 명물. 야키토리집에선 드물게 <b>완전 금연</b>이라 옷에 냄새가 안 배는 게 큰 장점. 다소 관광객 지향·가격대 있는 편이지만 접근성·쾌적함이 강점. 예약 없이도 OK."},
+]},
+{cat:"교자",jp:"餃子",note:"한입 교자 명물(타케토라)→나카스 심야 볶음밥(완교자)→갓 빚은 교자(덤플링 프레시)→중화 소룡포(바쿠주도).",items:[
+  {ko:"타케토라",jp:"竹虎 / Taketora",s:{taste:8.8,value:8.8,rep:9.3,access:9.5,conv:7.5},badges:["한입교자 명물","텐진역 도보","★4.8·3,902"],why:"텐진 <b>인기 1위급 이자카야</b>(4.8/3,900건, 한국 블로그 단골). 한입 사이즈 교자가 겉바속촉, 맥주와 환상 궁합. 텐진역 도보권에 <b>새벽 2시까지</b>라 2차로 완벽. 흡연 가능·온라인 주문."},
+  {ko:"완교자",jp:"ワンギョーザ / Wan Gyoza",s:{taste:8.8,value:8.7,rep:8.7,access:8.7,conv:6.5},badges:["나카스 심야","한입교자+볶음밥","★4.4·1,524"],why:"나카스의 <b>활기찬 심야 교자·중화</b> 집(4.4, 새벽 1시까지). 한입 교자에 스파이시 칠리오일+간장 조합이 중독적이고, 웍향 가득한 볶음밥·차슈가 명물. 눈앞의 빠른 조리 퍼포먼스가 볼거리, 외국인 응대도 친절. 좁고 붐비는 로컬 야식 스폿."},
+  {ko:"후쿠오카 덤플링 프레시",jp:"Fukuoka dumpling fresh 大名",s:{taste:9.0,value:8.5,rep:8.8,access:8.7,conv:7.5},badges:["갓 빚은 교자","사케 셀렉션","★4.7·1,518"],why:"다이묘의 <b>갓 빚어 바삭·육즙 교자</b>(4.7). 신선한 재료가 느껴지는 교자에 작은 안주들이 사케와 잘 맞고 셀렉션도 좋음. 활기차고 깔끔한 모던 이자카야 분위기에 직원이 밝음. 야외석도 있어 시원한 맥주 한잔에 좋음."},
+  {ko:"바쿠주도 교자",jp:"爆汁堂 / Bakujudo",s:{taste:9.1,value:8.7,rep:8.0,access:8.7,conv:6.5},badges:["중화 소룡포","수제·육즙폭발","★4.6·표본적음"],why:"다이묘의 <b>손으로 빚는 중화 만두(소룡포)</b> 소형점. \"상하이 그 맛\"이라는 평처럼 육즙이 한 방울도 안 새는 정통 소룡포, 사장이 간을 잘 맞춤. 란저우 우육면도 호평. 표본은 적지만(신규) 퀄리티 확실 — 출출할 때 한 접시."},
+]},
+{cat:"카레",jp:"カレー",note:"텐진 수프+카츠카레(차부야)→골목 스파이스 카레(티키)→방글라 정통(하이더). 할랄·비건 옵션 있는 곳 위주로.",items:[
+  {ko:"차부야 카레 텐진",jp:"茶房カレー 天神 / Chabuya Curry",s:{taste:9.0,value:8.5,rep:8.7,access:9.3,conv:7.0},badges:["수프+정통 카레","할랄·비건 대응","★4.6·228"],why:"텐진 솔라리아 스테이지의 <b>수프카레+일반 카레</b> 전문(4.6). 향신료 풍미 좋은 수프카레와 부드러운 치킨/비프카츠 카레가 호평, 현미밥 선택 가능하고 <b>할랄·비건 옵션</b>까지. 카운터 위주 소형이라 붐비지만 회전 빠름. 텐진역 바로라 접근성 최상."},
+  {ko:"앨리 카레 티키",jp:"路地裏カレー Tiki / Alley Curry",s:{taste:9.0,value:8.5,rep:8.5,access:8.3,conv:6.0},badges:["스파이스 카레","트리하우스 2층","★4.3·712"],why:"와타나베도리 골목의 <b>스파이스 카레 히든젬</b>(4.3). 후추가 톡 쏘는 매운 치킨 카레가 시그니처, 2층은 트리하우스 같은 아늑한 분위기. 점심엔 줄서지만 회전 빠르고 영어 메뉴 있음, 태국 고추로 매운맛 추가 가능. 인기 메뉴는 1시경 품절."},
+  {ko:"하이더 방글라데시 카레",jp:"Hyder Bangladeshi Curry",s:{taste:9.0,value:8.5,rep:8.7,access:8.3,conv:7.0},badges:["방글라 정통","할랄","★4.6·339"],why:"케고(텐진 남쪽)의 <b>정통 방글라데시 카레</b>(4.6). 16가지 향신료의 흙내음 나는 깊은 치킨 카레에 당근·감자 듬뿍, <b>할랄</b>이라 무슬림도 안심. 사장이 따뜻해 나갈 때 배웅까지. 향신료 제대로 된 카레를 원하면 정답."},
+  {ko:"가람",jp:"ガラム / GARAM",s:{taste:9.3,value:8.8,rep:8.7,access:8.0,conv:5.5},badges:["로컬 카레 성지","키마+쿠민 감자","★4.5·434"],why:"타카사고의 <b>현지인만 찾는 카레 성지</b>(4.5). 딱 2종 카레만 파는데 향과 매콤함·깊이가 압도적 — \"인생 최고 키마 카레\"라는 평, 수제 쿠민·강황 매시트포테이토와 절임양파가 별미. 6석뿐이라 <b>대기 필수</b>, 셰프 혼자 운영. 점심만(12~15시)·수·일 휴무."},
+]},
+{cat:"돈까스",jp:"とんかつ",note:"저온조리 화이트 돈카츠(와카바·쿠로마츠) + 규슈 필수 규카츠(모토무라). 둘은 다른 메뉴이니 취향대로.",items:[
+  {ko:"돈카츠 와카바",jp:"とんかつ若葉 / Tonkatsu Wakaba",s:{taste:9.3,value:8.0,rep:8.5,access:9.0,conv:6.5},badges:["등심 화이트돈카츠","조리 25분","★4.3·1,833"],why:"<b>저온조리 화이트 돈카츠</b>의 텐진 대표 주자. 옅은 금빛 튀김옷이 가볍고 기름지지 않으며 고기는 육즙이 살아있음. 재즈 흐르는 분위기에 카츠카레도 호평. 단점은 주문 후 20~30분 대기 — 빠른 끼니엔 부적합."},
+  {ko:"쿠로마츠 다이묘",jp:"黒松 大名 / Kuromatsu Daimyo",s:{taste:9.0,value:8.5,rep:8.0,access:8.5,conv:6.0},badges:["부드러움 최상","현금만","★4.5·808"],why:"여러 도시 돈카츠 중 <b>부드러움은 여기가 최고</b>라는 평이 반복. 1,500엔대부터, 트러플 샐러드 드레싱도 인기. 단점이 명확 — <b>현금·소액권만</b> 가능하고 오픈 10분 뒤 반쯤 차서 오픈런 권장."},
+  {ko:"카츠동 와카바 이마이즈미",jp:"かつ丼わか葉 今泉店",s:{taste:8.7,value:9.0,rep:7.5,access:8.5,conv:8.0},badges:["카츠동 전문","밥곱빼기 무료","★4.4·718"],why:"덮밥(카츠동) 특화. <b>계란을 아낌없이</b> 얹고 그릇 밖으로 넘치는 큰 커틀릿. 밥 사이즈 업 무료, 미소시루 포함. 2층 숨은 가게라 한가한 편이라 웨이팅 리스크가 낮음."},
+  {ko:"규카츠 모토무라 (파르코점)",jp:"牛かつもと村 福岡パルコ / Gyukatsu",s:{taste:9.0,value:8.0,rep:9.8,access:9.5,conv:5.5},badges:["규카츠(소고기)","돌판 셀프","★4.9·14,705"],why:"돈카츠는 아니지만 <b>텐진 카츠계 평판 1위</b>(4.9/1.4만건). 레어로 나온 규카츠를 돌판에 취향껏 익히고 여러 소금·소스에 찍어 먹음. 압도적 부드러움 + 가성비. 유일한 적은 <b>웨이팅(피크 최대 2시간)</b> — QR 대기 등록 후 다이묘 산책 추천."},
+]},
+{cat:"라멘",jp:"ラーメン",note:"후쿠오카 3대 돈코츠(신신)→24시 토마토라멘(산미)→츠케멘(카네토라)→나카스 야타이풍 흑마늘(잇시).",items:[
+  {ko:"신신라멘 텐진본점",jp:"博多らーめん ShinShin 天神本店",s:{taste:9.0,value:9.0,rep:9.5,access:9.0,conv:6.5},badges:["후쿠오카 3대 돈코츠","볶음밥 필수","★4.3·7,667"],why:"<b>후쿠오카 3대 돈코츠</b> 중 하나, 텐진 본점. 돼지+닭뼈 블렌딩으로 진하면서 끝맛이 맑아 부담 적음, 얇고 곧은 면의 식감이 시그니처. 볶음밥·교자도 단골픽. 현지·한국 모두 호평. <b>화·수휴무·웨이팅</b>(15~45분)."},
+  {ko:"산미 다이묘 중앙점",jp:"三味 天神大名中央店 / Sanmi",s:{taste:8.7,value:9.2,rep:9.0,access:8.5,conv:9.0},badges:["24시간","토마토라멘 명물","★4.6·2,868"],why:"<b>24시간 영업</b>의 만능 카드(4.6). 돈코츠보다 가벼운 <b>토마토라멘</b>이 명물, 키오스크 주문에 토핑 넣어도 1,000엔 이하 가성비. 교자 세트도 저렴. 야식·해장·심야에 가장 든든한 선택."},
+  {ko:"라멘 카네토라",jp:"ラーメン金虎 / Kanetora",s:{taste:9.0,value:8.5,rep:8.8,access:8.0,conv:6.5},badges:["츠케멘 강자","어분 추가","★4.3·3,206"],why:"<b>츠케멘이 특히 강한</b> 집(4.3/3,200건). 쫄깃한 면과 우마미 깊은 진한 츠케 육수, 어분 추가로 농도 조절 가능. 일반 라멘 국물도 \"이렇게 맛있는 건 처음\"이라는 평. 가게가 좁아 웨이팅."},
+  {ko:"멘야 가가 텐진",jp:"麺屋我ガ 天神店 / Menya Gaga",s:{taste:8.8,value:8.7,rep:8.5,access:8.5,conv:8.0},badges:["정통 하카타","자정까지","★4.4·1,360"],why:"<b>정통 하카타 돈코츠</b>를 자정까지. 진한 돈코츠 육수에 면 굳기·매운맛 선택 가능, 하우스 칠리소스가 별미. 교자도 호평. 늦게까지 붐비는 로컬 인기점이라 야식으로도 좋음."},
+  {ko:"이치란 텐진",jp:"一蘭 天神 / Ichiran",s:{taste:8.5,value:8.0,rep:8.8,access:8.5,conv:8.5},badges:["1인 부스","면 커스텀","★4.4·671"],why:"본고장에서 즐기는 <b>이치란</b>. 1인 집중 부스, 면 굳기·매운맛·진하기 커스텀이 강점이고 서비스가 1분 내로 빠름. 위치·접근성 좋음. 다만 지점·시간대별 <b>퀄리티 편차</b> 후기가 있으니 참고."},
+  {ko:"멘야 잇시 (라멘 잇시)",jp:"ラーメン一氏 / Ramen Isshi",s:{taste:9.0,value:8.7,rep:8.5,access:8.7,conv:6.5},badges:["나카스 야타이풍","흑마늘 돈코츠","★4.3·1,286"],why:"나카스 골목 안 <b>야타이 감성 돈코츠 라멘</b>(4.3, 새벽 4시까지). 흑마늘 오일을 얹은 블랙 라멘이 돼지 풍미를 끌어올리면서 짜지 않고, 면 리필 150엔. 이치란 줄 서기 싫을 때 대안으로 딱 — \"이치란보다 낫다\"는 평도. 야식·2차 최적."},
+]},
+{cat:"디저트",jp:"スイーツ",note:"수플레 팬케이크(누아이스·행복한)→데니시 파르페(데니)→과일타르트·산도→치즈타르트·모찌아이스→노포 화과자(스즈카케)→스페셜티 커피.",items:[
+  {ko:"누아이스 텐진",jp:"NOOICE 天神",s:{taste:9.3,value:8.3,rep:8.7,access:8.0,conv:6.0},badges:["크렘브륄레 팬케이크","흑임자 라떼","★4.4·867"],why:"이마이즈미의 <b>수플레 팬케이크 다크호스</b>(4.4). \"인생 최고 팬케이크\"라는 후기가 반복될 만큼 부드럽고 너무 가볍지도 않은 식감, 크렘브륄레·치즈 팬케이크가 시그니처. 흑임자 라떼도 호평. 메인 요리·브런치도 강함. <b>좁고 화장실 하나</b>라 피크엔 대기."},
+  {ko:"데니 앤 더 스푼",jp:"DE・NI&The Spoon",s:{taste:9.2,value:8.3,rep:8.7,access:8.5,conv:7.0},badges:["데니시 파르페","몽블랑","★4.6·169"],why:"니시나카스의 <b>데니시 페이스트리+파르페 전문</b>(4.6). 6종을 다 시켜도 실패가 없다는 평, 결이 살아있는 크루아상과 층층이 쌓은 파르페가 인스타·맛 모두 만족. 밤 퓌레 듬뿍 몽블랑 추천. 테이크아웃도 가능, 친절 응대. 표본은 적은 편(169건)."},
+  {ko:"키유페봉 텐진 (과일타르트)",jp:"キル フェ ボン 福岡",s:{taste:9.0,value:7.8,rep:8.7,access:9.0,conv:6.0},badges:["계절 과일타르트","딸기타르트 명물","★4.2·1,029"],why:"텐진의 <b>과일타르트 명가</b>(4.2/1,000건). 바삭한 타르트지에 제철 과일이 화려하게 — 딸기 페어 시즌엔 딸기타르트가 줄을 만듦. 크림이 가볍고 과일이 신선해 안 물림. <b>가격대 높고</b> 좌석 대기 길어 테이크아웃 추천."},
+  {ko:"행복한 팬케이크 텐진",jp:"幸せのパンケーキ 福岡天神店",s:{taste:9.0,value:8.0,rep:8.5,access:9.0,conv:6.5},badges:["수플레 팬케이크","QR 영어메뉴","★4.2·1,454"],why:"전국구 <b>수플레 팬케이크</b> 텐진점(4.2/1,450건). 사진 그대로의 폭신·커스터드 같은 속, 칼이 필요 없을 만큼 부드러움. 초코소스·로열밀크티 조합 추천. QR 영어 메뉴로 주문 쉬움. 계단 줄·이름 적고 대기, 피크엔 시간 더 걸림."},
+  {ko:"프루츠가든 신슨 (과일산도)",jp:"フルーツガーデン新SUN 博多",s:{taste:8.7,value:8.0,rep:8.5,access:9.5,conv:6.0},badges:["과일산도","하카타역 직결","★4.4·522"],why:"하카타역 신칸센 개찰구 근처 <b>과일산도(후르츠 산도) 명소</b>(4.4). 딸기 산도가 시그니처 — 부드러운 식빵에 가벼운 크림과 완벽한 딸기. 한국인 줄이 길기로 유명. 시간대 늦으면 종류가 빠지니 오전 권장, 응대가 다소 바쁜 편."},
+  {ko:"이몬느 하카타 (모찌 아이스크림)",jp:"いもんね 博多",s:{taste:8.8,value:7.8,rep:8.5,access:9.0,conv:7.5},badges:["모찌 아이스크림","다이후쿠식","★4.4·168"],why:"하카타 파르코 1층의 <b>모찌(다이후쿠) 아이스크림</b>(4.4). 쫄깃한 떡피로 감싼 젤라토가 독특한 식감, 포도·딸기 셔벗이 과일맛 진하다는 호평. 사진 명소. 한 알 ¥540~로 <b>가격은 높은 편</b>, 표본 적음(168건)."},
+  {ko:"베이크 치즈타르트 (텐진지하)",jp:"BAKE CHEESE TART 天神地下街",s:{taste:8.6,value:8.5,rep:8.3,access:9.5,conv:8.0},badges:["치즈타르트","테이크아웃 빠름","★4.3·507"],why:"텐진 지하상가의 <b>치즈타르트 전문</b>(4.3). 바삭한 타르트지+크리미한 치즈필링, 갓 구운 게 따뜻하고 신선. 오리지널이 베스트, 딸기·캐러멜·허니레몬도 인기. 지하상가라 접근성·회전 빠름, 가볍게 들고 다니기 좋음."},
+  {ko:"스즈카케 (하카타 본점)",jp:"鈴懸 博多本店 / Suzukake",s:{taste:8.8,value:8.3,rep:8.7,access:8.5,conv:7.0},badges:["노포 화과자","파르페·젠자이","★4.4·1,227"],why:"가와바타(나카스 인근)의 <b>노포 화과자+카페</b>(4.4). 쫄깃한 모찌·크리미한 팥의 젠자이, 아이스크림 3종 고르는 파르페·몽블랑이 호평이고 짠 다시마를 곁들여 단맛을 잡아줌. 딸기모찌는 후쿠오카 명물, 선물용 화과자도 인기 — 11시부터 카페 운영."},
+  {ko:"커피 카운티",jp:"Coffee County 福岡",s:{taste:9.0,value:8.3,rep:8.8,access:7.5,conv:6.5},badges:["스페셜티 커피","푸딩·케이크","★4.6·582"],why:"타카사고의 <b>스페셜티 핸드드립 명소</b>(4.6). 경연 출품급 원두를 잘 내려주고 바리스타 설명이 친절, 원두 구매 시 커피 한 잔 서비스. 푸딩·당근케이크 등 디저트도 곁들이기 좋음. 텐진서 살짝 떨어지고 <b>수요 휴무</b>."},
+  {ko:"다이묘 소프트크림",jp:"大名ソフトクリーム",s:{taste:8.7,value:8.3,rep:8.3,access:8.5,conv:7.5},badges:["소프트크림","말차·피스타치오","★4.1·859"],why:"다이묘의 <b>소프트아이스크림 전문</b>(4.1). 고급 우유 베이스로 진하면서 공기처럼 가벼운 식감, 말차·피스타치오가 인기. 야키니쿠·산책 후 디저트로 가볍게. 좌석도 있어 커피와 함께 쉬기 좋음. 늦은 오후엔 일부 품절."},
+  {ko:"아베키",jp:"アベキ / Abeki",s:{taste:8.8,value:8.3,rep:8.5,access:8.3,conv:5.5},badges:["치즈케이크·스페셜티 커피","야쿠인 히든젬","★4.3·508"],why:"야쿠인의 <b>치즈케이크+스페셜티 커피 히든젬</b>(4.3). 단단한 클래식 치즈케이크와 부드러운 화이트초코 치즈케이크가 시그니처, 오너 바리스타가 정성껏 내리는 커피와 햇살 드는 공간의 \"완벽한 바이브\". 4~5석 소형이라 <b>대기 김(최대 50분)·2시간제</b>, 조용히 쉬어가기 좋음. 일요휴무."},
+]},
+{cat:"사시미",jp:"刺身",note:"참치덮밥 갑(쿠로다한)→화로 생선구이(키스이마루)→야나기바시 시장 카이센동(쇼쿠도 미츠). 신선도 최상급.",items:[
+  {ko:"쿠로다한 (참치덮밥)",jp:"鮪のクロダハン / Tuna & Rice Kurodahan",s:{taste:9.3,value:9.0,rep:9.6,access:9.0,conv:6.5},badges:["다이묘","부위별 참치","★4.9·2,324"],why:"다이묘의 <b>참치덮밥 전문 강자</b>(4.9). 블루핀 부위별 참치가 신선·고소하고 볼살·훈제 등 구성이 화려, 사이드·국물도 호평. \"찾으면 뛰어가라\"는 현지 평. 단 <b>웨이팅(1시간 제한)·화요휴무</b>."},
+  {ko:"키스이마루",jp:"博多のうお焼き 喜水丸 / Kisuimaru",s:{taste:9.4,value:8.8,rep:8.5,access:8.5,conv:6.5},badges:["우오야키(생선구이)","오토로·고등어","★4.9·70"],why:"한국 블로그 단골 <b>생선구이 정식 명물</b>. 매일 나가하마 어시장 직송 생선을 카운터에서 셰프가 화로에 구워주고 조미료까지 설명. 오토로·하카타 사바 호평. <b>리뷰 표본 적음(70건)·수요휴무</b> 감안."},
+  {ko:"쇼쿠도 미츠",jp:"食堂 みつ / Shokudo Mitsu",s:{taste:9.1,value:8.7,rep:8.7,access:8.0,conv:6.0},badges:["야나기바시 시장","카이센동·사시미","★4.5·747"],why:"야나기바시 연합시장 안 <b>해산물덮밥·사시미 정식</b>(4.5). \"1만엔대 이상에서나 볼 신선도\"라는 평처럼 회가 진짜배기, 카이센동·사시미동이 가성비 최고. 저녁에도 여는 몇 안 되는 시장 식당, 기본 영어 응대·현금만 — 밥은 식초 안 넣은 흰밥."},
+  {ko:"치카에",jp:"稚加榮 / CHIKAE",s:{taste:9.0,value:7.5,rep:8.8,access:8.7,conv:6.5},badges:["12m 수조 료테이","활오징어·활생선","★4.3·3,738"],why:"다이묘의 <b>대형 수조를 갖춘 정통 료테이 해산물집</b>(4.3). 12m 수조를 둘러싼 카운터에서 활오징어·제철 활생선을 즉석 조리 — 회+생선머리 국물 등으로 즐기는 몰입형 경험. 기모노 응대에 영어 가능. <b>고가</b>(랍스터 등 일부 과한 값)지만 특별한 한 끼로. 카운터석 추천·예약 권장."},
+  {ko:"하카타 고마사바야",jp:"博多ごまさば屋 / Gomasabaya",s:{taste:9.1,value:8.8,rep:8.7,access:8.5,conv:6.0},badges:["고마사바(참깨고등어)","현지인 성지","★4.4·2,411"],why:"마이즈루의 <b>고마사바(참깨 양념 고등어회) 전문</b>(4.4). 후쿠오카 명물 고마사바를 신선하게, 튀긴 고등어도 호평이고 절임 무한리필. 가격 합리적인데 퀄리티 높아 현지인이 줄 섬. <b>점심엔 대기가 길어</b> 저녁(17:30~, 구글 미표기) 노리면 여유 — 로컬 위주·QR 주문."},
+]},
+{cat:"이자카야 등 술집",jp:"居酒屋・立ち飲み",note:"로바타 화로구이(신카와바시·산코바시·카미나리바시)→가성비 이자카야(신지대)→센베로 타치노미(타치노야·마타아시타)→심야 스탠딩바. 로바타는 예약 권장.",items:[
+  {ko:"무사시자",jp:"炉端の むさし座 / Musashiza",s:{taste:8.8,value:8.3,rep:8.5,access:8.0,conv:6.5},badges:["로바타 화로구이","생선·새우 뎅가쿠","★4.2·1,334"],why:"<b>로바타(화로구이) 경험</b>을 원할 때. 생선·새우를 직화로 구워 훈연향이 일품, 감자샐러드까지 호평. 1층 조리 광경이 볼거리이고 직원이 친절·서비스 안주도 줌. <b>예약 권장</b>(6시 이후 만석)."},
+  {ko:"신지대 텐진점",jp:"新時代 福岡天神店 / Shinjidai",s:{taste:8.0,value:9.5,rep:8.0,access:8.5,conv:6.0},badges:["닭껍질꼬치 초저가","새벽까지","★4.4·2,133"],why:"<b>가성비 끝판왕</b> 체인 이자카야. 닭껍질 꼬치가 바삭·고소하고 인당 1만원 안팎으로 푸짐. 늦게까지 영업해 현지인으로 붐빔. 단 <b>관광객 응대·계산 오버차지 편차</b> 후기가 있어 영수증 확인 권장."},
+  {ko:"로바타 신카와바시",jp:"炉端 新川橋 / Robata Shinkawabashi",s:{taste:9.4,value:8.5,rep:8.7,access:8.0,conv:6.0},badges:["히든젬","한국어 일부 응대","★4.9·108"],why:"와타나베도리 2층 안쪽의 <b>찾기 힘든 로바타 히든젬</b>(4.9). 눈앞 화로에서 갓 구운 가리비·생선·고기를 셰프 추천으로 즐기고, <b>가리비 다 먹은 뒤 육수로 리조또</b>(300엔)가 시그니처. 점주가 한국어 약간·부위 설명. 좁고 금방 차서 <b>예약 필수</b>(인스타/전화)."},
+  {ko:"로바타 산코바시",jp:"炉端 三幸橋 / Robata Sankobashi",s:{taste:9.0,value:8.5,rep:8.7,access:8.0,conv:7.0},badges:["한국어 메뉴","가리비 리조또","★4.5·662"],why:"하루요시의 <b>정통 로바타</b>(4.5). 사시미·야키토리 세트와 가리비가 인기, 역시 <b>가리비 육수로 치즈 리조또</b>를 만들어줌. 한국어/일본어 메뉴라 외국인 편함. \"후쿠오카 최고\"라는 단골 평. 2시간제·예약 권장."},
+  {ko:"카미나리바시",jp:"雷橋 / Kaminaribashi",s:{taste:8.9,value:8.5,rep:8.3,access:8.0,conv:6.0},badges:["카운터 12석","숯불","★4.4·345"],why:"와타나베도리의 <b>카운터 12석 소형 로바타</b>(4.4). 셰프가 눈앞에서 숯불로 구워주는 치킨세트·와규스테이크·가리비·카니미소가 호평. 영어 메뉴는 없지만 직원이 인내심 있게 응대. 좌석 한정이라 <b>전화 예약 권장</b>, 약간 연기."},
+  {ko:"신가리",jp:"しんがり / Shingari",s:{taste:8.6,value:8.5,rep:7.8,access:8.5,conv:7.0},badges:["새벽 2시까지","제철 생선","★4.1·238"],why:"마이즈루의 <b>활기찬 로바타</b>(4.1). 눈앞에서 굽는 생선·채소 향이 일품, 제철 생선 요리가 특히 호평이고 후쿠오카 지자케(현지 사케) 셀렉션이 좋음. <b>새벽 2시까지</b>라 2차로 좋음. 인기라 이른 시간·예약 권장."},
+  {ko:"타치노야 하카타",jp:"立ち呑み たちのや 博多",s:{taste:8.6,value:9.3,rep:8.3,access:8.5,conv:7.0},badges:["센베로 1,100엔","낮술 가능","★4.7·81"],why:"텐진의 <b>센베로 가성비 타치노미</b>(4.7). <b>1,100엔에 음료 2잔+안주 2개</b>, 보통 1잔 제한인 다른 곳과 달리 맥주 2잔·사케·소주까지 가능. 여성 점주의 따뜻한 분위기, 낮부터 영업해 대낮 한 잔에 좋음. 표본 적음(81건)·수요휴무."},
+  {ko:"메구스타 파이브",jp:"MEGUSTA FIVE standing bar",s:{taste:8.8,value:8.7,rep:8.5,access:8.0,conv:6.5},badges:["안주 퀄리티","새벽 1시까지","★4.6·119"],why:"하루요시의 <b>안주가 고급 레스토랑급</b>인 타치노미(4.6). 소염통 카르파초·훈제 고등어가 호평, 가격은 합리적. 손님·직원과 자연스레 대화하게 되는 구조로 \"후쿠오카 가면 또 가고 싶은 곳\". 서서 먹는 형태라 장시간엔 부담."},
+  {ko:"타치노미 마타아시타",jp:"立ち呑み またあした",s:{taste:8.4,value:9.2,rep:8.2,access:8.0,conv:6.5},badges:["센베로 세트","홈리 분위기","★4.5·122"],why:"와타나베도리 지하의 <b>홈리한 센베로 타치노미</b>(4.5). 항상 센베로 세트(술 2잔+안주 3종) 제공, 주말 이벤트 땐 오후 3시 오픈. 손님·점주가 함께 노래하고 어울리는 정겨운 분위기, 카라오케도 있음. 시간·요일 관계없이 부담 없는 한 잔. 일요휴무."},
+  {ko:"타치노미 카도야",jp:"立ち呑み 角屋 / Tachinomi Kadoya",s:{taste:8.2,value:9.0,rep:7.8,access:9.0,conv:7.0},badges:["정통 카쿠우치","저렴","★3.9·620"],why:"텐진 한복판의 <b>정통 카쿠우치(서서 마시는 선술집)</b>. 어머니 손맛 같은 가정식 안주가 저렴하고, 런치 세트는 550엔. 2층엔 라멘집도 있어 \"신신 줄 서느니 여기\"라는 평. 평점은 낮지만 가성비·접근성·로컬 정취가 핵심."},
+  {ko:"스탠딩바 시프트",jp:"STANDING BAR SHIFT",s:{taste:8.0,value:8.7,rep:9.0,access:8.0,conv:6.0},badges:["올프리(3,000엔)","새벽 5시까지","★4.9·547"],why:"다이묘의 <b>심야 소셜 스탠딩바</b>(4.9). 입장료 3,000엔에 <b>음료 무제한·재입장 자유</b>, 친절한 직원과 20~30대 현지인들로 활기. 음식보다 \"마시고 친구 만드는\" 나이트라이프 스폿 — 텐진 밤문화를 원하면 정답. 21시 오픈."},
+]},
+{cat:"일본 백반 (가정식)",jp:"定食・家庭料理",note:"타이차즈케 정식(이나바쵸)→수제 오니기리 조식(오무스비)→조식 생선구이(이토오카시)→자반·카이센동 정식(우오추).",items:[
+  {ko:"이나바쵸 잇케이",jp:"因幡町 一景 / Inabacho Ikkei",s:{taste:9.0,value:8.5,rep:8.7,access:9.2,conv:7.0},badges:["타이차즈케 명물","텐진 비즈니스센터","★4.6·314"],why:"텐진 비즈니스센터 지하의 <b>타이차즈케(도미 차밥)+야키토리</b>(4.6). 신선한 도미를 밥에 올려 먹다 육수를 부어 오차즈케로 마무리하는 하카타 명물, 두부·절임 반찬도 정갈. 점심 정식으로 든든하고 밤엔 야키토리에 한잔. 텐진역 직결이라 접근성 최상."},
+  {ko:"오무스비 요코초 (니시나카스)",jp:"おむすび横丁 西中洲本店",s:{taste:8.7,value:8.7,rep:8.3,access:8.7,conv:6.5},badges:["수제 오니기리","골목 조식","★4.2·218"],why:"니시나카스 골목의 <b>갓 쥔 수제 오니기리 조식</b>(4.2). 편의점과 격이 다른 따뜻한 주먹밥에 멘타이·소금 등 재료 선택, 조식 세트엔 미소시루·반찬까지. 테이블의 가쓰오부시+간장 조합이 별미. 아침 7시부터라 든든한 하루 시작에 좋음 — 골목 정취도 매력."},
+  {ko:"이토오카시",jp:"いとおかし / Itookashi",s:{taste:9.2,value:8.8,rep:8.7,access:8.0,conv:6.5},badges:["조식 생선구이","마치야 분위기","★4.4·1,420"],why:"<b>조식 생선구이</b>(은대구·고등어)가 시그니처. 사바가 마르지 않고 촉촉, 참치 사시미 퀄리티도 기대 이상. 오래된 마치야 건물의 정취, 친절한 응대. 인기라 <b>오픈런·웨이팅</b> 발생."},
+  {ko:"우오추",jp:"魚忠 / Uochu",s:{taste:8.7,value:8.7,rep:8.5,access:8.0,conv:7.0},badges:["정식·카이센동","태블릿 주문","★4.4·1,414"],why:"<b>자반대구·참치 정식</b>과 카이센동 중심. 메인 1~2개 선택 세트가 푸짐하고 사시미가 신선. 태블릿 주문이라 외국인 편함. <b>수요휴무</b>에 인기 메뉴가 빨리 품절되니 일찍 방문 권장."},
+  {ko:"우메야마 텟페이 쇼쿠도",jp:"梅山鉄平食堂 / Umeyama Teppei",s:{taste:9.1,value:9.0,rep:8.8,access:8.5,conv:6.0},badges:["생선구이 가정식","가성비 갑","★4.3·1,671"],why:"와타나베도리의 <b>일본 가정식(생선구이·사시미) 명점</b>(4.3). 모둠 사시미·각종 생선구이가 신선하고 <b>가성비가 예외적으로 좋아</b> 늘 줄 섬. 정겨운 홈스타일 분위기·친절 응대, 하트랜드 생맥과 궁합. 일본어 메뉴뿐이라 번역앱·사진 주문 권장·수요휴무."},
+  {ko:"잇카쿠 쇼쿠도",jp:"いっかく食堂 天神店",s:{taste:8.8,value:9.2,rep:8.3,access:8.5,conv:7.0},badges:["함바그·아지프라이","밥·반찬 무한","★4.1·322"],why:"와타나베도리 빌딩 지하의 <b>초가성비 정식당</b>(4.1). 20여 종 중 육즙 함바그·바삭 아지프라이(전갱이튀김)·크리미 게살크로켓이 인기, <b>밥 무한리필+절임·커피 셀프</b>. 점심만(11~15시) 운영에 인기 메뉴는 12시면 절반 품절 — 일찍 가세요. 토·일 휴무."},
+]},
+{cat:"기타 그외",jp:"その他",note:"후쿠오카 3대 별미 총집합 — 장어덮밥(에이토·우나토토), 모츠나베(라쿠텐치·이치후지), 닭날개 테바사키(토메테바), 심야 텐푸라(후우도).",items:[
+  {ko:"우나기노에이토",jp:"うなぎの八十 / Unagi no Eito",s:{taste:9.0,value:9.3,rep:9.6,access:8.0,conv:7.0},badges:["나카스(도보권)","오차즈케 마무리","★4.9·7,362"],why:"<b>장어 부문 평판 압도적 1위</b>(4.9/7,300건). 나카스라 텐진 도보권. 부드러운 장어+돌판 연출, 다시 부어 먹는 오차즈케 마무리가 호평. <b>40달러대 가성비</b>로 냉동 장어보다 싸다는 평까지. 예약 권장."},
+  {ko:"우나토토 다이묘",jp:"名代 宇奈とと 大名店 / Unatoto",s:{taste:8.5,value:9.5,rep:8.7,access:8.5,conv:8.0},badges:["가성비 장어","조식 가능","★4.7·694"],why:"<b>가성비 장어의 정답</b>. 합리적 가격에 퀄리티 좋은 우나기동, 조식 세트도 있고 오코노미야키·문어구이까지. 1인 식사에도 부담 없음. 사이드는 별도 주문 필요."},
+  {ko:"모츠나베 라쿠텐치 (다이묘)",jp:"元祖もつ鍋 楽天地 天神大名店",loc:"다이묘",s:{taste:9.1,value:9.0,rep:9.5,access:9.0,conv:7.0},badges:["모츠나베 명물","후쿠오카 필수","★4.9·5,025"],why:"후쿠오카 명물 <b>모츠나베(곱창전골)의 대표 명가</b>(4.9). 부추가 산처럼 쌓인 진한 국물에 곱창이 신선·부드럽고, 마무리 면·밥까지 완벽. 영어 응대·1인분 가능. 모츠나베 입문이라면 정답. 피크 웨이팅."},
+  {ko:"모츠나베 이치후지 (니시도리)",jp:"もつ鍋 一藤 天神西通り店",loc:"다이묘",s:{taste:9.1,value:8.8,rep:9.0,access:8.5,conv:6.5},badges:["미소 모츠나베","곱창 신선","★4.7·3,303"],why:"<b>미소 베이스 모츠나베</b>가 강한 명가(4.7). 진한 외관과 달리 잡내 없이 깔끔, 곱창이 부드럽고 채소·두부·면까지 알참. 말고기 사시미도 호평. 피크엔 예약 필수, 국물이 졸면 짜질 수 있음."},
+  {ko:"토메테바 이마이즈미",jp:"とめ手羽 今泉",s:{taste:8.3,value:7.5,rep:6.5,access:8.5,conv:7.0},badges:["치킨윙 11/10 평","이자카야형","★4.1·207"],why:"테바사키 전문점 중 <b>평점·맛 균형이 가장 안정적</b>. 치킨윙과 새우 호평(\"11/10\"), 말고기·고로케 등 규슈 안주도 다양. 무한리필 음료 조합 가능. 모츠나베는 평범하다는 평."},
+  {ko:"후우도 (가스소바·텐푸라)",jp:"札幌かすそば と 天ぷら 風土 中洲",loc:"나카스",s:{taste:9.0,value:8.7,rep:9.0,access:8.5,conv:7.0},badges:["심야 5시까지","우니·붕장어 텐푸라","★4.7·1,255"],why:"나카스의 <b>가스소바+텐푸라 심야 명소</b>(4.7, 새벽 5시까지). 매콤 츠케소바, 우니·가리비·붕장어 텐푸라가 호평이고 굴이 신선. 매트차 소금 등 디테일이 좋음. 예약 없이도 들어가기 쉬운 편, 야식 최적."},
+]},
+{cat:"텐진 Top 10",jp:"天神ベスト10",note:"장르 불문 텐진·다이묘·나카스 권역 종합 최고점 Top 10. 평점·리뷰 수·현지 평판·임팩트를 종합했습니다. 카드 하단 버튼으로 바로 지도 연결됩니다.",items:[
+  {ko:"규카츠 모토무라 (텐진 파르코)",jp:"牛かつもと村 福岡パルコ",loc:"텐진·파르코",s:{taste:9.0,value:8.3,rep:9.9,access:9.5,conv:6.0},badges:["규카츠","평점 1위급","★4.9·14,706"],why:"<b>텐진 전체 평판 최상위</b>(4.9/1.47만건). 레어 규카츠를 돌판에 취향껏 익혀 먹는 압도적 부드러움+가성비. 파르코 신관 지하, QR 대기로 회전 관리. 유일한 적은 <b>피크 웨이팅</b>이지만 그 값을 함."},
+  {ko:"쿠로다한 (다이묘)",jp:"鮪のクロダハン 大名",loc:"다이묘",s:{taste:9.3,value:9.0,rep:9.6,access:9.0,conv:6.5},badges:["참치덮밥","부위별 참치","★4.9·2,328"],why:"다이묘의 <b>참치덮밥 성지</b>(4.9). 블루핀 부위별 참치가 신선·고소하고 볼살·훈제 구성이 화려, 국물·사이드까지 호평. \"찾으면 뛰어가라\"는 현지 평. 웨이팅(1시간 제한)·화요휴무."},
+  {ko:"모츠나베 라쿠텐치 (다이묘)",jp:"元祖もつ鍋 楽天地 天神大名店",loc:"다이묘",s:{taste:9.1,value:9.0,rep:9.5,access:9.0,conv:7.0},badges:["모츠나베 명물","후쿠오카 필수","★4.9·5,025"],why:"후쿠오카 명물 <b>모츠나베(곱창전골)의 대표 명가</b>(4.9). 부추가 산처럼 쌓인 진한 국물에 곱창이 신선·부드럽고, 마무리 면·밥까지 완벽. 영어 응대·1인분 가능. 모츠나베 입문이라면 정답. 피크 웨이팅."},
+  {ko:"우나기노에이토 (나카스)",jp:"うなぎの八十 中洲",loc:"나카스",s:{taste:9.0,value:9.3,rep:9.6,access:8.5,conv:7.0},badges:["장어덮밥","오차즈케 마무리","★4.9·7,362"],why:"나카스의 <b>장어덮밥 평판 1위</b>(4.9/7,300건). 부드러운 장어+돌판 연출, 다시 부어 먹는 오차즈케 마무리가 호평. <b>40달러대 가성비</b>로 냉동 장어보다 낫다는 평. 예약 권장."},
+  {ko:"니쿠덴 (텐진/아카사카)",jp:"特選黒毛和牛 個室焼肉 にく田 NIKUDEN",loc:"아카사카",s:{taste:9.4,value:8.7,rep:9.0,access:7.5,conv:7.5},badges:["흑모와규","개별룸","★4.8·854"],why:"<b>흑모와규 프라이빗 야키니쿠</b>(4.8). 테이블마다 개별룸이라 분위기 최고, 6,000엔 세트로 둘이 다 못 먹을 양에 두꺼운 컷이 발군. 예약 권장, 아카사카 쪽이라 텐진 중심선 살짝 거리."},
+  {ko:"타케토라 (한입교자)",jp:"竹虎 / Taketora",loc:"텐진",s:{taste:8.8,value:8.8,rep:9.3,access:9.5,conv:7.5},badges:["한입교자","새벽 2시까지","★4.8·3,912"],why:"텐진 <b>인기 1위급 이자카야</b>(4.8/3,900건). 한입 교자가 겉바속촉, 맥주와 환상 궁합. 텐진역 도보권에 새벽 2시까지라 2차로 완벽. 흡연 가능·온라인 주문."},
+  {ko:"로바타 신카와바시 (히든젬)",jp:"炉端 新川橋",loc:"와타나베도리",s:{taste:9.4,value:8.5,rep:8.7,access:8.0,conv:6.0},badges:["로바타 히든젬","가리비 리조또","★4.9·108"],why:"찾기 힘든 <b>로바타 히든젬</b>(4.9). 화로에서 갓 구운 가리비·생선을 셰프 추천으로, 가리비 육수 리조또가 시그니처. 점주가 한국어 약간. 좁아서 <b>예약 필수</b>. 표본은 적지만 만족도 압도적."},
+  {ko:"모츠나베 이치후지 (니시도리)",jp:"もつ鍋 一藤 天神西通り店",loc:"다이묘",s:{taste:9.1,value:8.8,rep:9.0,access:8.5,conv:6.5},badges:["미소 모츠나베","곱창 신선","★4.7·3,303"],why:"<b>미소 베이스 모츠나베</b>가 강한 명가(4.7). 진한 외관과 달리 잡내 없이 깔끔, 곱창이 부드럽고 채소·두부·면까지 알참. 말고기 사시미도 호평. 피크엔 예약 필수, 국물이 졸면 짜질 수 있음."},
+  {ko:"산큐 우동 (멘타이크림)",jp:"三休うどん / Sankyu Udon",loc:"이마이즈미",s:{taste:9.2,value:9.0,rep:8.5,access:8.5,conv:6.5},badges:["멘타이크림우동","현지 히든젬","★4.7·377"],why:"이마이즈미의 <b>멘타이크림우동 히든젬</b>(4.7). 명란+크림 우동과 바삭한 고보텐·고등어튀김이 호평, 우동+카츠동이 1,000엔 초반대로 가성비 최고. 주인 친절. <b>18시 마감·월휴</b> 주의."},
+  {ko:"신신라멘 텐진본점 (돈코츠)",jp:"博多らーめん ShinShin 天神本店",loc:"텐진",s:{taste:9.0,value:9.0,rep:9.5,access:9.0,conv:6.5},badges:["후쿠오카 3대 돈코츠","볶음밥 필수","★4.3·7,668"],why:"<b>후쿠오카 3대 돈코츠</b> 중 하나, 텐진 본점. 닭뼈 블렌딩으로 진하면서 맑은 끝맛, 얇고 곧은 면이 시그니처. 볶음밥·교자도 단골픽. <b>화·수휴무·웨이팅</b>(15~45분)."},
+]},
+];
+
+// compute & sort
+DATA.forEach(c=>{c.items.forEach(i=>i.ov=overall(i.s));c.items.sort((a,b)=>b.ov-a.ov);});
+
+const tabs=document.getElementById('tabs');
+const main=document.getElementById('main');
+const AX=[["taste","맛","f-taste"],["rep","평판","f-rep"],["value","가성비","f-value"],["access","접근성","f-access"],["conv","편의성","f-conv"]];
+
+// ===== 일정표 =====
+const IPID={
+"후쿠오카공항 국제선":"ChIJ0UzWdzmQQTURcDrTaleyJTQ","텐진역":"ChIJE6vr6o-RQTURSk3GcHV8j8M","텐진 파르코":"ChIJVVUVAI-RQTUR4O0-0xXxi0Y",
+"쿠로다한":"ChIJ9Z6V8R-RQTURPpWlHgwtCX8","나카스 야타이":"ChIJxSSDyVORQTURNCeKKwmq6Fk","다자이후 텐만구":"ChIJzfvrKp-bQTURl65fp6vRJLg",
+"오호리공원":"ChIJx6TbjMyTQTURmPdN7915780","후쿠오카 성터":"ChIJQ_6JJtOTQTURigJ8dBobe18","모모치 해변":"ChIJVySQW6qTQTUR1FtUfzDxrNA",
+"후쿠오카타워":"ChIJAQAEI6qTQTURLZF6YTY7dPk","하카타역":"ChIJdbP55seRQTURkIu5RT0r4i4","구시다 신사":"ChIJV2pTquqRQTURpI1FhH5siaE",
+"하카타 옛거리":"ChIJ3_jEGcCRQTURSlrd5mjn-I0","가와바타 상점가":"ChIJiShWTeuRQTURqDhAzGV8sXw","도초지 대불":"ChIJa2avE8GRQTURwD8yDpUT99g",
+"캐널시티":"ChIJYcOBiZWRQTUR0Rl0ehe67eA","유후인역":"ChIJy4QaPtqtRjUR2dObSL4OhIo","고토노카신":"ChIJfeA96dWtRjUR3-419BkC0RA",
+"유노쓰보 거리":"ChIJMSNEu9CvRjURCQmOuH67y7Y","긴린코":"ChIJa7QFnn2uRjUR5ofN82Ctd44","유후인역 버스센터":"ChIJ-bNiFtqtRjURhyvLL2fL_V0",
+"신신라멘":"ChIJaVDnv46RQTURWuJE01tjUGk","신지대":"ChIJTwJ21ruRQTUR_Vg2XgGekQc","잇카쿠 쇼쿠도":"ChIJVVWBWpeRQTUR5OWmqsDYDxs",
+"키스이마루":"ChIJPyivy66RQTURzAMqGSqRgPA","완교자":"ChIJMargXpSRQTURNkogWlX1Uzw","모츠나베 라쿠텐치":"ChIJYy3t692RQTURo8ZRYB7ccPs",
+"야키니쿠 앗짱":"ChIJnXOp7xmRQTUR74JAqMU0eHs","네오메구스타":"ChIJi2Fk7O2RQTURTcufnETF5sE"
+};
+function placeUrl(n,q){
+  const pid=IPID[n];
+  const query=encodeURIComponent(q||(n+' 福岡'));
+  return pid?`https://www.google.com/maps/search/?api=1&query=${query}&query_place_id=${pid}`
+            :`https://www.google.com/maps/search/?api=1&query=${query}`;
+}
+function linkify(txt,links){
+  if(!links) return txt;
+  links.forEach(l=>{
+    const nm=typeof l==='string'?l:l.n;
+    const a=`<a class="plink" href="${placeUrl(nm,(typeof l==='object')?l.q:null)}" target="_blank" rel="noopener">${nm}📍</a>`;
+    txt=txt.split(nm).join(a);
+  });
+  return txt;
+}
+const ITIN=[
+ {no:"DAY 1",date:"금요일",theme:"도착 + 텐진 쇼핑·미식",rows:[
+  {t:"11:30",txt:"후쿠오카공항 국제선 도착",memo:"입국심사·수하물·컨택리스 카드 확인",links:["후쿠오카공항 국제선"]},
+  {t:"12:20–12:50",txt:"지하철 공항선으로 텐진역 (11분) · 코인로커 짐 보관",links:["텐진역"]},
+  {t:"12:50–13:50",txt:"점심: 텐진 파르코 라멘",meal:"점심",memo:"가성비 대안 — 신신라멘 텐진본점(돈코츠+볶음밥 세트, 1,000엔대)",links:["텐진 파르코","신신라멘"]},
+  {t:"13:50–16:30",txt:"텐진·다이묘·이마이즈미 편집샵·옷 브랜드",memo:"11시 오픈 · 면세는 여권 지참",links:[{n:"다이묘",q:"Daimyo Chuo Ward Fukuoka"}]},
+  {t:"16:30–17:00",txt:"카페·잠깐 휴식"},
+  {t:"17:00–18:20",txt:"이른 저녁: 쿠로다한 (모츠나베)",meal:"저녁",links:["쿠로다한"]},
+  {t:"18:20–19:20",txt:"숙소 체크인·샤워·짐 정리"},
+  {t:"19:20–20:30",txt:"나카스 야타이 강변 산책·야경",memo:"야타이는 자릿세·가격 있는 편 — 맥주+꼬치 맛보기 정도로",links:["나카스 야타이"]},
+  {t:"20:30–23:00",txt:"나카스/텐진 이자카야 술",meal:"술",memo:"가성비 픽 — 완교자(한입교자+볶음밥, 새벽 1시) / 야키니쿠 앗짱(새벽 4시)",links:["완교자","야키니쿠 앗짱"]},
+ ]},
+ {no:"DAY 2",date:"토요일",theme:"다자이후 + 오호리·모모치 (짐 없는 날)",rows:[
+  {t:"08:00–09:00",txt:"기상·조식"},
+  {t:"09:00–09:40",txt:"니시테츠로 다자이후 텐만구 이동",memo:"텐진역→다자이후 · 컨택리스",links:["텐진역","다자이후 텐만구"]},
+  {t:"09:40–12:00",txt:"다자이후 텐만구·참배길·우메가에모찌·스벅·오미쿠지",memo:"오전이라 덜 붐빔",links:["다자이후 텐만구"]},
+  {t:"12:00–12:40",txt:"텐진 복귀",links:["텐진역"]},
+  {t:"12:40–13:40",txt:"점심 (텐진 근처)",meal:"점심",memo:"가성비 픽 — 잇카쿠 쇼쿠도(함바그·아지프라이 정식, 밥·반찬·커피 무한리필 1,000엔대 · 11~15시)",links:["잇카쿠 쇼쿠도"]},
+  {t:"13:40–16:00",txt:"오호리공원·일본정원 + 후쿠오카 성터(마이즈루)",memo:"지하철 약 6분 · 스벅·산책",links:["오호리공원","후쿠오카 성터"]},
+  {t:"16:00–18:15",txt:"모모치 해변 + 후쿠오카타워 일몰",memo:"3인 택시 추천 · 10월 일몰 약 17:40",links:["모모치 해변","후쿠오카타워"]},
+  {t:"18:15–19:00",txt:"야쿠인/다이묘로 이동",memo:"귀가 버스 혼잡 · 택시"},
+  {t:"19:00–22:30",txt:"야쿠인 모츠나베 저녁 + 술",meal:"저녁·술",memo:"모츠나베 라쿠텐치(4.8) / 술 위주면 신지대(닭껍질꼬치 초저가) · 금연 원하면 네오메구스타",links:["모츠나베 라쿠텐치","신지대","네오메구스타"]},
+ ]},
+ {no:"DAY 3",date:"일요일",theme:"하카타 마무리 + 유후인 이동",rows:[
+  {t:"08:00–09:00",txt:"기상·조식",meal:"아침",memo:"가성비 픽 — 키스이마루(화로 생선구이 정식)",links:["키스이마루"]},
+  {t:"09:00–09:40",txt:"체크아웃·하카타역 코인로커 짐 보관",memo:"텐진→하카타 5분 · 이 날의 핵심",links:["하카타역"]},
+  {t:"09:40–10:30",txt:"구시다 신사",links:["구시다 신사"]},
+  {t:"10:30–11:15",txt:"하카타 옛거리(마치야)·가와바타 상점가",links:["하카타 옛거리","가와바타 상점가"]},
+  {t:"11:15–11:45",txt:"도초지 대불",memo:"빠듯하면 생략",links:["도초지 대불"]},
+  {t:"11:45–12:50",txt:"캐널시티 (분수쇼·구경)",memo:"분수쇼 시간 확인",links:["캐널시티"]},
+  {t:"12:50–13:30",txt:"하카타역 복귀·브런치·짐 찾기",meal:"점심",memo:"라멘 또는 역 도시락 — 기차에서 먹기",links:["하카타역"]},
+  {t:"13:30–16:34",txt:"유후인노모리 → 유후인 (약 2시간 14분)",memo:"일요일 오후편 · 예약 필수",links:["유후인역"]},
+  {t:"16:34–17:00",txt:"고토노카신 체크인",memo:"역 도보 10분/택시",links:["고토노카신"]},
+  {t:"17:00–18:30",txt:"유노쓰보 거리·긴린코 산책",links:["유노쓰보 거리","긴린코"]},
+  {t:"18:30–20:00",txt:"료칸 가이세키 석식",meal:"저녁"},
+  {t:"20:00–22:00",txt:"유카타 + 온천·전세탕 + 맥주"},
+ ]},
+ {no:"DAY 4",date:"월요일",theme:"유후인 아침 + 공항 (20:00 출발)",rows:[
+  {t:"07:00–08:00",txt:"긴린코 물안개 산책 + 아침 온천",memo:"인파·벌레 적음",links:["긴린코"]},
+  {t:"08:00–09:00",txt:"료칸 조식",meal:"아침"},
+  {t:"09:00–11:00",txt:"체크아웃(짐 보관)·유노쓰보 거리·카페",links:["유노쓰보 거리"]},
+  {t:"11:00–12:30",txt:"유후인 점심(토리텐·붕고규)·기념품",meal:"점심"},
+  {t:"12:30–15:00",txt:"자유시간·버퍼·짐 찾기"},
+  {t:"15:00–15:30",txt:"유후인역 버스센터 이동·대기",links:["유후인역 버스센터"]},
+  {t:"15:30–17:05",txt:"유후인호 고속버스 → 후쿠오카공항 국제선",memo:"예약 완료",links:["후쿠오카공항 국제선"]},
+  {t:"17:05–20:00",txt:"공항 체크인·면세·저녁",meal:"저녁"},
+  {t:"20:00",txt:"서울행 출발 ✈"},
+ ]},
+];
+const CHECKS=["3일차 유후인노모리(일요일 오후편) — JR규슈에서 서둘러 예약","4일차 유후인호 고속버스 — 예약 완료","Day 2가 가장 빡빡 — 컨디션 보고 다자이후 단축 또는 모모치 야경 생략 가능","Day 3는 하카타역 코인로커 짐 보관이 핵심 · 빠듯하면 도초지 생략","3인이면 애매한 구간(오호리↔모모치, 모모치↔야쿠인)은 택시가 시간·체력 세이브"];
+const MEALS=["D1 점심 — 신신라멘 텐진본점 (돈코츠+볶음밥, 1,000엔대)","D1 저녁·술 — 쿠로다한 모츠나베 후 완교자/앗짱 (야타이는 맛보기만)","D2 점심 — 잇카쿠 쇼쿠도 (밥·반찬·커피 무한리필)","D2 저녁 — 라쿠텐치 모츠나베 / 술은 신지대·네오메구스타","D3 아침 — 키스이마루 (화로 생선구이 정식)"];
+
+const itinSec=document.createElement('section');
+itinSec.className='section on';itinSec.id='secItin';
+let ih=`<div class="sec-head"><h3>일정표 <span style="font-family:'Shippori Mincho';color:var(--muted);font-weight:600;font-size:16px">3泊4日</span></h3><span class="cnt">4일</span></div>
+<div class="itin-intro">금 도착 → <b>텐진 2박</b> → <b>유후인 료칸 1박</b> → 월 20:00 출국 · 남자 3명. 파란 밑줄 장소를 누르면 구글 지도로 바로 연결됩니다. 주황 배지는 식사 시간대이고, 예산을 아끼는 가성비 픽을 메모로 달아뒀습니다.</div>`;
+ITIN.forEach(d=>{
+  let rows=d.rows.map(r=>{
+    const mealBadge=r.meal?`<span class="meal">${r.meal}</span>`:'';
+    const memo=r.memo?`<span class="memo">${linkify(r.memo,r.links)}</span>`:'';
+    return `<div class="irow2"><span class="t">${r.t}</span><span class="itxt">${mealBadge}${linkify(r.txt,r.links)}${memo}</span></div>`;
+  }).join('');
+  ih+=`<div class="day"><div class="day-top"><span class="day-no">${d.no}</span><span class="day-date">${d.date}</span><span class="day-theme">${d.theme}</span></div><div class="rows2">${rows}</div></div>`;
+});
+ih+=`<div class="checks"><div class="checkbox"><h4>페이스·예약 체크</h4><ul>${CHECKS.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+ <div class="checkbox meals"><h4>가성비 식사 픽</h4><ul>${MEALS.map(m=>`<li>${m}</li>`).join('')}</ul></div></div>`;
+itinSec.innerHTML=ih;main.appendChild(itinSec);
+
+const itinTab=document.createElement('button');
+itinTab.className='tab on';itinTab.innerHTML=`<span class="n">✦</span>일정표`;
+itinTab.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.section').forEach(x=>x.classList.remove('on'));
+  itinTab.classList.add('on');document.getElementById('secItin').classList.add('on');
+  window.scrollTo({top:tabs.offsetTop-2,behavior:'smooth'});
+};
+tabs.appendChild(itinTab);
+
+DATA.forEach((c,ci)=>{
+  const t=document.createElement('button');
+  t.className='tab';
+  t.innerHTML=`<span class="n">${String(ci+1).padStart(2,'0')}</span>${c.cat}`;
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.section').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    document.getElementById('sec'+ci).classList.add('on');
+    window.scrollTo({top:tabs.offsetTop-2,behavior:'smooth'});
+    setTimeout(()=>animate(ci),60);
+  };
+  tabs.appendChild(t);
+
+  const sec=document.createElement('section');
+  sec.className='section';
+  sec.id='sec'+ci;
+  let html=`<div class="sec-head"><h3>${c.cat} <span style="font-family:'Shippori Mincho';color:var(--muted);font-weight:600;font-size:16px">${c.jp}</span></h3><span class="cnt">${c.items.length}곳</span></div>`;
+  if(c.warn) html+=`<div class="sec-note"><span>⚠</span><span><b>표기 주의.</b> ${c.warn}</span></div>`;
+  if(c.note) html+=`<div class="sec-note" style="color:var(--muted);background:var(--paper-2);border-color:var(--line)"><span>↳</span><span>${c.note}</span></div>`;
+
+  c.items.forEach((i,idx)=>{
+    const top=idx===0;
+    let bars='';
+    AX.forEach(([k,lab,cls])=>{
+      bars+=`<div class="bar"><span class="lab">${lab}</span><div class="track"><div class="fill ${cls}" data-w="${i.s[k]*10}"></div></div><span class="sc">${i.s[k].toFixed(1)}</span></div>`;
+    });
+    let bd='';
+    i.badges.forEach(b=>{
+      let cl='badge';
+      if(b.includes('★')) cl='badge star';
+      else if(/현금|예약|휴무|주의|웨이팅|편차|적음|오픈런/.test(b)) cl='badge r';
+      else if(/가성비|무료|24시|히든|전문|명물|명가|도보|접근|센베로|미슐랭|와규|돈코츠|모츠나베|3대|1위|규탄|새벽/.test(b)) cl='badge g';
+      bd+=`<span class="${cl}">${b}</span>`;
+    });
+    const isTop=c.cat.indexOf('Top 10')>=0;
+    const rankLabel=isTop?('#'+(idx+1)):(top?'BEST':'#'+(idx+1));
+    const locPill=i.loc?`<span class="loc-pill">${i.loc}</span>`:'';
+    html+=`<div class="card${top?' top':''}">
+      <span class="rank">${rankLabel}</span>
+      ${locPill}
+      <div class="card-top">
+        <div class="stamp"><span class="v">${i.ov.toFixed(1)}</span><span class="l">SCORE</span></div>
+        <div class="meta">
+          <div class="name-ko">${i.ko}</div>
+          <div class="name-jp">${i.jp}</div>
+          <div class="badges">${bd}</div>
+        </div>
+      </div>
+      <div class="bars">${bars}</div>
+      <div class="why">${i.why}</div>
+      <a class="maplink" href="${mapUrl(i)}" target="_blank" rel="noopener">📍 구글 지도에서 열기</a>
+    </div>`;
+  });
+  sec.innerHTML=html;
+  main.appendChild(sec);
+});
+
+function animate(ci){
+  document.querySelectorAll('#sec'+ci+' .fill').forEach(f=>{f.style.width=f.dataset.w+'%';});
+}
+animate(0);
+</script>
+</body>
+</html>
